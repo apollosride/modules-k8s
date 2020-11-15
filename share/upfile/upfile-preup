@@ -2,9 +2,6 @@
 preup()
 {
 	cd /usr/local/cbsd/modules/k8s.d/
-	rm -f kubernetes.tgz puppet.tgz
-	tar cfz kubernetes.tgz kubernetes
-	tar cfz puppet.tgz puppet
 	cd ${myworkdir}
 	local _clean_ip
 
