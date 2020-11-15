@@ -76,15 +76,6 @@ master()
 
 bootstrap()
 {
-	cd /home/ubuntu
-	tar xfz puppet.tgz
-	rm -f puppet.tgz
-	rm -rf /etc/puppetlabs/puppet
-	mv puppet /etc/puppetlabs
-	rm -rf /etc/puppetlabs/code/environments/production/modules || true
-	[ ! -d /etc/puppetlabs/code/environments/production ] && mkdir -p /etc/puppetlabs/code/environments/production
-	ln -sf /etc/puppetlabs/puppet/modules /etc/puppetlabs/code/environments/production/modules
-
 	cat > /etc/hosts <<EOF
 127.0.0.1       localhost
 EOF
@@ -94,7 +85,6 @@ EOF
 	hostname $( cat /etc/hostname )
 	MY_IP=$( hostname -I | awk '{printf $1}' )
 	echo "${MY_IP} ${MY_HOSTNAME}" >> /etc/hosts
-
 }
 
 addnode()
