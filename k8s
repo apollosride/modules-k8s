@@ -314,6 +314,9 @@ init_upfile()
 	${SED_CMD} -Ees:%%INIT_MASTERS_IPS%%:"${init_masters_ips}":g \
 		-es:%%INIT_NODES_IPS%%:"${init_nodes_ips}":g \
 		-es:%%VIP%%:"${vip}":g \
+		-es:%%PV_ENABLE%%:"${pv_enable}":g \
+		-es:%%PV_SPEC_NFS_PATH%%:"${pv_spec_nfs_path}":g \
+		-es:%%PV_SPEC_SERVER%%:"${pv_spec_server}":g \
 		${DIST_MODULE_PATH}/share/upfile/upfile-header-pv > ${CBSD_PWD}/CBSDfile
 	${CAT_CMD} ${DIST_MODULE_PATH}/share/upfile/upfile-globals >> ${CBSD_PWD}/CBSDfile
 	${CAT_CMD} ${DIST_MODULE_PATH}/share/upfile/upfile-preup >> ${CBSD_PWD}/CBSDfile
