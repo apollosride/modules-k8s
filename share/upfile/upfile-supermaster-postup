@@ -20,5 +20,9 @@ postup_%%JNAME%%()
 	${ECHO} "${N1_COLOR}Info: ${N0_COLOR}" | tee -a ${_message}
 	${ECHO} "${N1_COLOR}   kubectl get nodes${N0_COLOR}" | tee -a ${_message}
 	${ECHO} "${N1_COLOR}   kubectl cluster-info${N0_COLOR}" | tee -a ${_message}
+	${ECHO} "${N1_COLOR}   kubectl get pv${N0_COLOR}" | tee -a ${_message}
+	${ECHO} "${N1_COLOR}   To create nfs-pvc on PV: kubectl create -f ${N2_COLOR}/usr/local/cbsd/modules/k8s.d/scripts/nfs-pvc.yaml${N0_COLOR}" | tee -a ${_message}
+	${ECHO} "${N1_COLOR}   To get nfs-pvc status:   kubectl get pv nfs-pv${N0_COLOR}" | tee -a ${_message}
+
 	echo " --- master postup message ---" | tee -a ${_message}
 }

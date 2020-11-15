@@ -14,7 +14,7 @@ preup()
 	${ECHO} "${N1_COLOR}  * re-configure PV${N0_COLOR}"
 	/usr/local/cbsd/modules/k8s.d/scripts/nfs-enable.sh -h ${PV_SPEC_SERVER}
 	if [ -n "${INIT_NODES_IPS}" ]; then
-		/usr/local/cbsd/modules/k8s.d/scripts/exports-modify.sh -p nfs -h "${INIT_NODES_IPS}"
+		/usr/local/cbsd/modules/k8s.d/scripts/exports-modify.sh -p /nfs -h "${INIT_NODES_IPS}"
 	fi
 
 	# dhcpd cleanip list
