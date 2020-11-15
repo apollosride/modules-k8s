@@ -403,6 +403,8 @@ EOF
 	done
 
 	${CAT_CMD} ${DIST_MODULE_PATH}/share/upfile/upfile-postup >> ${CBSD_PWD}/CBSDfile
+	${ECHO} "${N1_COLOR}Success. To deploy cluster, please use: ${N2_COLOR}cbsd up${N0_COLOR}"
+
 }
 
 destroy()
