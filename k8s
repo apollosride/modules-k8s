@@ -4,7 +4,7 @@ DIST_MODULE_PATH="${distmoduledir}/k8s.d"
 . ${DIST_MODULE_PATH}/share/k8s.conf
 OPTARGS="${MYCOL}"
 MYARG="mode"
-MYOPTARG="display header active human k8s_name dryrun checkip"
+MYOPTARG="display header active human k8s_name dryrun checkip gold"
 MYDESC="Operate with K8S cluster"
 CBSDMODULE="sys"
 ADDHELP="\
@@ -36,6 +36,7 @@ MODULE_PATH="${dbdir}/k8s"
 . ${subr}
 dryrun=0
 checkip=1
+gold=0
 . ${cbsdinit}
 . ${system}
 . ${strings}
@@ -375,15 +376,22 @@ EOF
 	fi
 
 	id=0
+	init_role=
 	for i in ${master_list}; do
 		if [ ${id} -eq 0 ]; then
+			if [ ${gold} -eq 1 ]; then
+				init_role="gold"
+			else
+				init_role="supermaster"
+			fi
 			${SED_CMD} -Ees:%%JNAME%%:"${i}":g ${DIST_MODULE_PATH}/share/upfile/upfile-supermaster-postup >> ${CBSD_PWD}/CBSDfile
 			${SED_CMD} -Ees:%%JNAME%%:"${i}":g \
-			-es:%%ROLE%%:supermaster:g \
+			-es:%%ROLE%%:${init_role}:g \
 			-es:%%KEYFILE_PUB%%:"${_keyfile_pub}":g \
 			-es:%%KEYFILE%%:"${_keyfile}":g \
 			-es:%%CLUSTER%%:"${cluster}":g \
 			${DIST_MODULE_PATH}/share/upfile/upfile-master >> ${CBSD_PWD}/CBSDfile
+			[ ${gold} -eq 1 ] && break
 		else
 			${SED_CMD} -Ees:%%JNAME%%:"${i}":g \
 			-es:%%KEYFILE_PUB%%:"${_keyfile_pub}":g \
@@ -394,13 +402,15 @@ EOF
 		id=$(( id + 1 ))
 	done
 
-	for i in ${worker_list}; do
-		${SED_CMD} -Ees:%%JNAME%%:"${i}":g \
-		-es:%%KEYFILE_PUB%%:"${_keyfile_pub}":g \
-		-es:%%KEYFILE%%:"${_keyfile}":g \
-		-es:%%CLUSTER%%:"${cluster}":g \
-		-es:%%ROLE%%:worker:g ${DIST_MODULE_PATH}/share/upfile/upfile-worker >> ${CBSD_PWD}/CBSDfile
-	done
+	if [ ${gold} -ne 1 ]; then
+		for i in ${worker_list}; do
+			${SED_CMD} -Ees:%%JNAME%%:"${i}":g \
+			-es:%%KEYFILE_PUB%%:"${_keyfile_pub}":g \
+			-es:%%KEYFILE%%:"${_keyfile}":g \
+			-es:%%CLUSTER%%:"${cluster}":g \
+			-es:%%ROLE%%:worker:g ${DIST_MODULE_PATH}/share/upfile/upfile-worker >> ${CBSD_PWD}/CBSDfile
+		done
+	fi
 
 	${CAT_CMD} ${DIST_MODULE_PATH}/share/upfile/upfile-postup >> ${CBSD_PWD}/CBSDfile
 	${ECHO} "${N1_COLOR}Success. To deploy cluster, please use: ${N2_COLOR}cbsd up${N0_COLOR}"

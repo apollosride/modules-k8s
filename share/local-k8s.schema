@@ -12,7 +12,7 @@ created="TIMESTAMP DATE DEFAULT (datetime('now','localtime'))"
 
 cluster="TEXT DEFAULT \"k8s-bhyve.io\""
 master_hostname="TEXT DEFAULT \"master.k8s-bhyve.io\""
-k8s_ver="TEXT DEFAULT \"v1.19.3\""
+k8s_ver="TEXT DEFAULT \"v1.19.4\""
 etcd_ver="TEXT DEFAULT \"v3.4.13\""
 flannel_ver="TEXT DEFAULT \"v0.12.0\""
 init_masters_ips="TEXT DEFAULT \"10.0.0.2\""

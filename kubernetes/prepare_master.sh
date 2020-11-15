@@ -13,27 +13,34 @@ config_swap()
 }
 
 config_swap
-rm -rf /kubernetes
-cd /
-ln -s ~ubuntu/kubernetes /kubernetes
+
+if [ "${INIT_ROLE}" = "gold" ]; then
+	rm -rf /kubernetes
+	cd /
+	ln -s ~ubuntu/kubernetes /kubernetes
+fi
+
 . /kubernetes/config
 . /kubernetes/tools.subr
 . /kubernetes/time.subr
 . /kubernetes/ansiicolor.subr
 
 # in gold:
-if [ "${1}" = "gold" ]; then
+if [ "${INIT_ROLE}" = "gold" ]; then
 	# fixes for "debconf: unable to initialize frontend: Dialog"
 	#apt -y install dialog
+
 
 	export DEBIAN_FRONTEND="noninteractive"
 
 	# sleep 30 seconds to let Ubuntu/apt boot ready
 	# (apt-get update doesn't pass ASAP, need for pause
+
 	for i in $( seq 10 10 100 ); do
 		echo "sleep 100 for apt ready ${i}/100"
 		sleep 10
 	done
+
 	#sleep 120
 	echo "disable automatic updates"
 	cat > /etc/apt/apt.conf.d/20auto-upgrades <<EOF

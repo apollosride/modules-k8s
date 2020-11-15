@@ -20,10 +20,35 @@ gold()
 	rm -rf /etc/puppetlabs/code/environments/production/modules || true
 	[ ! -d /etc/puppetlabs/code/environments/production ] && mkdir -p /etc/puppetlabs/code/environments/production
 	ln -sf /etc/puppetlabs/puppet/modules /etc/puppetlabs/code/environments/production/modules
-	/opt/puppetlabs/bin/puppet apply /etc/puppetlabs/puppet/site.pp
 
-	sed -i'' -Ees:%%ETCD_VER%%:${ETCD_VER}:g /etc/puppetlabs/puppet/data/nodes/master.yaml
+	sed -Ees:%%MASTER_HOSTNAME%%:${MASTER_HOSTNAME}:g \
+	-Ees:%%CONFIG_SOURCE%%:${CONFIG_SOURCE}:g \
+	-Ees:%%ETCD_VER%%:${ETCD_VER}:g \
+	-Ees:%%CLUSTER%%:${CLUSTER}:g \
+	-Ees#%%API_SERVER%%#${API_SERVER}#g \
+	-Ees#%%API_SERVERS%%#${API_SERVERS}#g \
+	-Ees#%%APISERVER_HOST%%#${APISERVER_HOST}#g \
+	-Ees:%%VIP%%:${VIP}:g \
+	/etc/puppetlabs/puppet/data/role/k8s-master.yaml > /etc/puppetlabs/puppet/data/role/gold.yaml
+
+	[ ! -d /etc/puppetlabs/puppet/data/nodes ] && mkdir -p /etc/puppetlabs/puppet/data/nodes
+
+	MY_HOSTNAME=$( /opt/puppetlabs/bin/facter fqdn )
+
+	echo "role: gold" >> /etc/puppetlabs/puppet/data/nodes/${MY_HOSTNAME}.yaml
+
+#	/opt/puppetlabs/bin/puppet apply /etc/puppetlabs/puppet/site.pp
+	/opt/puppetlabs/bin/puppet apply --show_diff --hiera_config=/etc/puppetlabs/puppet/hiera.yaml /etc/puppetlabs/puppet/site.pp
+	#sed -i'' -Ees:%%ETCD_VER%%:${ETCD_VER}:g /etc/puppetlabs/puppet/data/nodes/master.yaml
 	. /home/ubuntu/bootstrap.config
+
+	/kubernetes/install_scripts_secure/install_binaries.sh
+	/kubernetes/install_scripts_secure/install_haproxy.sh
+	docker pull k8s.gcr.io/kubernetes-dashboard-amd64:${DASHBOARD_VER}
+	apt clean -y
+	rm -rf /var/lib/cloud
+	rm -f /home/ubuntu/authorized_keys /home/ubuntu/bootstrap.config /home/ubuntu/id_ed25519 /home/ubuntu/kubernetes.tgz
+	rm -f /etc/puppetlabs/puppet/data/role/gold.yaml /etc/puppetlabs/puppet/data/nodes/*
 	exit 0
 }
 

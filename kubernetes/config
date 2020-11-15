@@ -60,7 +60,7 @@ FLANNEL_VERSION="flannel-${FLANNEL_VER}-linux-amd64"
 FLANNEL_FETCH_URL="https://github.com/coreos/flannel/releases/download/${FLANNEL_VER}/flannel-${FLANNEL_VER}-linux-amd64.tar.gz"
 
 # current/latest version https://storage.googleapis.com/kubernetes-release/release/stable.txt
-K8S_VER="v1.19.3"
+K8S_VER="v1.19.4"
 K8S_FETCH_URL="https://dl.k8s.io/${K8S_VER}/kubernetes-server-linux-amd64.tar.gz"
 
 
