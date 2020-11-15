@@ -45,6 +45,17 @@ if [ ! -d ${MODULE_PATH} ]; then
 	${CHOWN_CMD} ${cbsduser}:${cbsduser} ${MODULE_PATH}
 fi
 
+test_for_ip()
+{
+	printf "   ${N1_COLOR}${CBSD_APP} check ${1}: ${N2_COLOR}${2}${N2_COLOR}..." 1>&2
+	checkip ip=${2} check=1 2>/dev/null
+	if [ $? -eq 2 ]; then
+		${ECHO} "${W1_COLOR}failed, IP already in use?${N0_COLOR}" 1>&2
+	else
+		${ECHO} "${H3_COLOR}ok${N0_COLOR}" 1>&2
+	fi
+}
+
 init_k8s()
 {
 	local _dbpath="${MODULE_PATH}/${k8s_name}.sqlite"
@@ -99,6 +110,8 @@ init_k8s()
 
 	${SSH_KEYGEN_CMD} -t ed25519 -f ${_keyfile} -N '' > /dev/null
 	${MV_CMD} ${_keyfile}.pub ${_pubfile} ${_keyfile_pub}
+
+	${ECHO} "${N1_COLOR}Success. Please use to create CBSDfile: ${N2_COLOR}cbsd k8s mode=init_upfile k8s_name="${k8s_name}"${N0_COLOR}"
 
 	return 0
 }
