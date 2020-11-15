@@ -16,4 +16,3 @@ spec:
       volumeMounts:
         - mountPath: "/usr/share/nginx/html"
           name: nginx-pv-storage
-
