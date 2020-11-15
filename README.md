@@ -7,6 +7,7 @@ This module requires the kubernetes cloud image, please fetch via:
 
 To install:
 
+  - cbsd module mode=install k8s
   - echo 'k8s.d' >> ~cbsd/etc/modules.conf
   - cbsd initenv
 
