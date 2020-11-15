@@ -20,9 +20,16 @@ postup_%%JNAME%%()
 	${ECHO} "${N1_COLOR}Info: ${N0_COLOR}" | tee -a ${_message}
 	${ECHO} "${N1_COLOR}   kubectl get nodes${N0_COLOR}" | tee -a ${_message}
 	${ECHO} "${N1_COLOR}   kubectl cluster-info${N0_COLOR}" | tee -a ${_message}
-	${ECHO} "${N1_COLOR}   kubectl get pv${N0_COLOR}" | tee -a ${_message}
-	${ECHO} "${N1_COLOR}   To create nfs-pvc on PV: kubectl create -f ${N2_COLOR}/usr/local/cbsd/modules/k8s.d/scripts/nfs-pvc.yaml${N0_COLOR}" | tee -a ${_message}
-	${ECHO} "${N1_COLOR}   To get nfs-pvc status:   kubectl get pv nfs-pv${N0_COLOR}" | tee -a ${_message}
 
+	if [ "${PV_ENABLE}" ]; then
+		${ECHO} "${N1_COLOR}   To test PV:${N0_COLOR}" | tee -a ${_message}
+		${ECHO} "${N1_COLOR}   echo \"Hello, NFS Storage NGINX\" > /nfs/index.html${N0_COLOR}" | tee -a ${_message}
+		${ECHO} "${N1_COLOR}   kubectl get pv${N0_COLOR}" | tee -a ${_message}
+		${ECHO} "${N1_COLOR}   Create nfs-pvc on PV: kubectl create -f ${N2_COLOR}/usr/local/cbsd/modules/k8s.d/scripts/nfs-pvc.yaml${N0_COLOR}" | tee -a ${_message}
+		${ECHO} "${N1_COLOR}   To get nfs-pvc status:   kubectl get pv nfs-pv${N0_COLOR}" | tee -a ${_message}
+		${ECHO} "${N1_COLOR}   Create nginx pod with shared FS: kubectl create -f ${N2_COLOR}/usr/local/cbsd/modules/k8s.d/scripts/nfs-pv-pod.yaml${N0_COLOR}" | tee -a ${_message}
+		${ECHO} "${N1_COLOR}   To get nginx pod status: kubectl get pod nginx-pv-pod -o wide${N0_COLOR}" | tee -a ${_message}
+		${ECHO} "${N1_COLOR}   Get index: curl ${N2_COLOR}http://10.0.0.XX${N0_COLOR}" | tee -a ${_message}
+	fi
 	echo " --- master postup message ---" | tee -a ${_message}
 }
