@@ -8,6 +8,10 @@ preup()
 	cd ${myworkdir}
 	local _clean_ip
 
+	# dhcpd cleanip list
+	_clean_ip="${INIT_NODES_IPS} ${INIT_MASTERS_IPS} ${VIP}"
+	dhcpd cleanup="${_clean_ip}"
+
 	# configure PV
 	[ "${PV_ENABLE}" != "1" ] && return 0
 
@@ -16,8 +20,4 @@ preup()
 	if [ -n "${INIT_NODES_IPS}" ]; then
 		/usr/local/cbsd/modules/k8s.d/scripts/exports-modify.sh -p /nfs -h "${INIT_NODES_IPS}"
 	fi
-
-	# dhcpd cleanip list
-	_clean_ip="${INIT_NODES_IPS} ${INIT_MASTERS_IPS} ${VIP}"
-	dhcpd cleanup="${_clean_ip}"
 }

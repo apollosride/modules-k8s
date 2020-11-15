@@ -2,7 +2,7 @@ bhyve_%%JNAME%%()
 {
 	vm_ram="8g"
 	vm_cpus="2"
-	imgsize="20g"
+	imgsize="5g"
 	ip4_addr=$( dhcpd ip4pool="${INIT_MASTERS_IPS}" )
 	fqdn="${jname}.%%CLUSTER%%"
 	ci_jname="${jname}"

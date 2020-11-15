@@ -7,8 +7,8 @@ globals()
 
 	ip4_gw="10.0.0.1"
 	ci_gw4="${ip4_gw}"
-	imgtype="zvol"
-	#imgtype="md"
+	#imgtype="zvol"
+	imgtype="md"
 	runasap=1
 	ssh_wait=1
 	interface="bridge1"
