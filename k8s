@@ -27,8 +27,8 @@ ADDHELP="\
   init example:
     cbsd k8s mode=init k8s_name=k1 init_masters_ips=\"10.0.0.2\" vip=DHCP\n\
     cbsd k8s mode=init k8s_name=k1 init_masters_ips=\"10.0.0.2\" init_nodes_ips=\"10.0.0.101 10.0.0.102 10.0.0.103\" vip=10.0.0.100 worker_vm_ram=8g worker_vm_cpus=8 worker_imgsize=80g\n\
-    cbsd k8s mode=init k8s_name=k2 init_masters_ips=\"DHCP DHCP DHCP\" init_nodes_ips=\"DHCP DHCPD DHCP\" vip=DHCP cluster=\"k8s-cloud.com\"\n\
-    cbsd k8s mode=init k8s_name=k3 init_masters_ips=\"DHCP DHCP DHCP\" init_nodes_ips=\"DHCP DHCPD DHCP\" vip=DHCP cluster=\"k8s-cloud.com\" master_interface=\"cbsdvale_vale1\" worker_interface=\"cbsdvale_vale1\" pv_enable=1 pv_spec_nfs_path=/k8s-nfs-share pv_spec_server=192.168.0.1\n\
+    cbsd k8s mode=init k8s_name=k2 init_masters_ips=\"DHCP DHCP DHCP\" init_nodes_ips=\"DHCP DHCP DHCP\" vip=DHCP cluster=\"k8s-cloud.com\"\n\
+    cbsd k8s mode=init k8s_name=k3 init_masters_ips=\"DHCP DHCP DHCP\" init_nodes_ips=\"DHCP DHCP DHCP\" vip=DHCP cluster=\"k8s-cloud.com\" master_interface=\"cbsdvale_vale1\" worker_interface=\"cbsdvale_vale1\" pv_enable=1 pv_spec_nfs_path=/k8s-nfs-share pv_spec_server=192.168.0.1\n\
 "
 EXTHELP="wf_k8s"
 
