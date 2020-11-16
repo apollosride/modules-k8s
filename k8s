@@ -49,6 +49,7 @@ fi
 test_for_ip()
 {
 	printf "   ${N1_COLOR}${CBSD_APP} check ${1}: ${N2_COLOR}${2}${N2_COLOR}..." 1>&2
+	${ARP_CMD} -dn ${2} > /dev/null 2>&1
 	checkip ip=${2} check=1 2>/dev/null
 	if [ $? -eq 2 ]; then
 		${ECHO} "${W1_COLOR}failed, IP already in use?${N0_COLOR}" 1>&2
@@ -143,6 +144,7 @@ init_upfile()
 
 	[ -r ${CBSD_PWD}/CBSDfile ] && err 1 "${N1_COLOR}${CBSD_APP}: CBSDfile file already exist in directory: ${N2_COLOR}${CBSD_PWD}/CBSDfile${N0_COLOR}"
 	[ -r ${CBSD_PWD}/bootstrap.config ] && err 1 "${N1_COLOR}${CBSD_APP}: bootstrap.config file already exist in directory: ${N2_COLOR}${CBSD_PWD}/bootstrap.config${N0_COLOR}"
+	[ -r ${CBSD_PWD}/config ] && err 1 "${N1_COLOR}${CBSD_APP}: config already exist in directory: ${N2_COLOR}${CBSD_PWD}${N0_COLOR}"
 
 	_dbpath="${MODULE_PATH}/${k8s_name}.sqlite"
 	[ ! -r ${_dbpath} ] && err 1 "${N1_COLOR}K8S not exist: ${N2_COLOR}${_dbpath}${N0_COLOR}"
@@ -291,12 +293,13 @@ init_upfile()
 
 	_prev_net=0
 
-	for i in ${vip} ${init_nodes_ips} ${init_masters_ips}; do
+	for src in vip init_nodes_ips init_masters_ips ip4_gw; do
+		eval i="\$$src"
 		eval $( ${miscdir}/sipcalc ${i}/24 )
 		if [ "${_prev_net}" = "0" ]; then
 			_prev_net="${_network_address}"
 		else
-			[ "${_prev_net}" != "${_network_address}" ] && err 1 "${W1_COLOR}${CBSD_APP} error: ${N1_COLOR} not same network. vip=, init_masters_ips, init_nodes_ips must be on the same subnet: ${N2_COLOR}${_prev_net} != ${_network_address}${N0_COLOR}"
+			[ "${_prev_net}" != "${_network_address}" ] && err 1 "${W1_COLOR}${CBSD_APP} error: ${N1_COLOR} not same network. vip=, init_masters_ips, init_nodes_ips and ip4_gw= must be on the same subnet: ${N2_COLOR}${_prev_net} != ${src}:${_network_address}${N0_COLOR}"
 		fi
 	done
 

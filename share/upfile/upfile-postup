@@ -18,8 +18,8 @@ postup()
 		/usr/local/cbsd/modules/k8s.d/scripts/nfs-pv.yaml > ${_tmp_yaml}
 
 	set -o xtrace
-	kubectl apply -f ${_tmp_yaml}
+	kubectl --kubeconfig ${myworkdir}/config apply -f ${_tmp_yaml}
 	set +o xtrace
-	kubectl get pv | tee -a ${_message}
+	kubectl --kubeconfig ${myworkdir}/config get pv | tee -a ${_message}
 	rm -f ${_tmp_yaml} message.txt
 }
