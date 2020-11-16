@@ -36,11 +36,16 @@ pv_spec_server="TEXT DEFAULT \"10.0.0.1\""
 
 master_vm_ram="TEXT DEFAULT \"2g\""
 master_vm_cpus="INTEGER DEFAULT 1"
-master_imgsize="TEXT DEFAULT \"20g\""
+master_vm_imgsize="TEXT DEFAULT \"20g\""
 
 worker_vm_ram="TEXT DEFAULT \"2g\""
 worker_vm_cpus="INTEGER DEFAULT 1"
-worker_imgsize="TEXT DEFAULT \"20g\""
+worker_vm_imgsize="TEXT DEFAULT \"20g\""
+
+master_interface="TEXT DEFAULT \"auto\""
+worker_interface="TEXT DEFAULT \"auto\""
+
+ip4_gw="TEXT DEFAULT \"10.0.0.1\""
 
 CONSTRAINT=
 INITDB=

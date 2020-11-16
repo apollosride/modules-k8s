@@ -1,6 +1,11 @@
 # global preup function
 preup()
 {
+	local _res
+
+	_res=$( which kubectl )
+	[ ! -x "${_res}" ] && err 1 "${N1_COLOR}${CBSD_UP}: no such kubectl, please install first: ${N2_COLOR}pkg install -y sysutils/kubectl${N0_COLOR}"
+
 	cd /usr/local/cbsd/modules/k8s.d/
 	cd ${myworkdir}
 	local _clean_ip

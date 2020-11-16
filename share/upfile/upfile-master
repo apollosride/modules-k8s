@@ -1,19 +1,20 @@
 bhyve_%%JNAME%%()
 {
-	vm_ram="8g"
-	vm_cpus="2"
-	imgsize="20g"
+	vm_ram="%%MASTER_VM_RAM%%"
+	vm_cpus="%%MASTER_VM_CPUS%%"
+	imgsize="%%MASTER_VM_IMGSIZE%%"
 	ip4_addr=$( dhcpd ip4pool="${INIT_MASTERS_IPS}" )
 	fqdn="${jname}.%%CLUSTER%%"
 	ci_jname="${jname}"
 	ci_fqdn="${fqdn}"
 	ci_ip4_addr="${ip4_addr}"
+	interface="%%MASTER_INTERFACE%%"
 }
 postcreate_%%JNAME%%()
 {
 	rm -f /tmp/prepare_master-${jname}.log
 	bscp %%KEYFILE_PUB%% ${jname}:authorized_keys
 	bscp %%KEYFILE%% ${jname}:id_ed25519
-	bscp /tmp/bootstrap.config ${jname}:bootstrap.config
+	bscp bootstrap.config ${jname}:bootstrap.config
 	bexec jname=${jname} sudo /home/ubuntu/kubernetes/prepare_master.sh %%ROLE%% | tee -a /tmp/prepare_master-${jname}.log
 }
