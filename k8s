@@ -177,7 +177,7 @@ init_upfile()
 		coredns_enable_bool="false"
 	fi
 
-	etcd_tmpfs="1"
+	etcd_tmpfs="0"
 	enable_debug="1"
 
 	case "${vip}" in
